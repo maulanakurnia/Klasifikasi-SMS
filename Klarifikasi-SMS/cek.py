@@ -29,14 +29,15 @@ class BacaData(QWidget):
     
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
+
         self.setWindowTitle('Memuat Data')
 
         self.bar = QProgressBar(self)
         self.bar.setGeometry(80, 20, 200, 25)
-        self.bar.setValue(0)
+        # self.bar.setValue(100)
 
         self.timer = QTimer()
-        self.timer.timeout.connect(self.handleTimer)
+        self.timer.timeout.connect(self.clean_with_loop)
         self.timer.start(100)
 
         # import file yang berisi kata-kata tidak penting
@@ -46,6 +47,30 @@ class BacaData(QWidget):
         self.stopword = set(data_stopword)
         self.punctuation = set(string.punctuation)
 
+
+        sms_csv = pd.read_csv('dataset_sms.csv')
+        # print(sms_csv.head())
+
+        # mengambil hanya kolom Teks sms dan disimpan di variabel sms (yang siap dibersihkan)
+        self.sms = []
+        for index, row in sms_csv.iterrows():
+            self.sms.append(row["Teks"])
+        # print("Jumlah sms: ", len(self.sms))
+
+        # mengambil hanya kolom label dalam variabel y_train
+        y_train = []
+        for index, row in sms_csv.iterrows():
+            y_train.append(row["label"])
+        # print("Jumlah label: ", len(y_train))
+
+        # membersihkan dokumen sms
+        sms_bersih = self.clean_with_loop(self.sms)    
+
+        # pembentukan vektor tf-idf untuk pembobotan kata
+        vectorizer = TfidfVectorizer(stop_words=data_stopword)
+        x_train = vectorizer.fit_transform(self.sms_bersih)
+        print(x_train)
+
         # method untuk cleaning dokumen
     def clean(self, doc):
         # menghilangkan kata tidak penting
@@ -54,24 +79,30 @@ class BacaData(QWidget):
         self.punc_free = ''.join(ch for ch in self.stop_free if ch not in self.punctuation)
         # menjadikan ke kata dasar
         self.stemmer = StemmerFactory().create_stemmer()
-        self.normalized = self.temmer.stem(self.punc_free)
+        self.normalized = self.stemmer.stem(self.punc_free)
         # menghilangkan angka
         self.processed = re.sub(r"\d+","",self.normalized)
         # membuat satu dokumen menjadi array berisi tiap kata
         y = self.processed.split()
         return y
 
+    def pindah(self):
+        self.switch_window.emit(self.line_edit.text())
 
-    def handleTimer(self, arr):
-        self.hasil = []
-        self.value = self.bar.value(tqdm(arr))
-        for item in self.value:
-            self.cleaned = BacaData.clean(self, item)
-            self.cleaned = ' '.join(self.cleaned)
-            self.hasil.append(self.cleaned)
-        return self.hasil
+    def clean_with_loop(self, sms):
+        hasil = []
+        value = self.bar.setValue(len(sms))
+        # progress = tqdm(sms)
+        # masalah pada di item dan value, yang seharusnya
+        # value diganti dengan progress
+        for item in value:
+            cleaned = self.clean(item)
+            cleaned = ' '.join(cleaned)
+            hasil.append(cleaned)
+        return hasil
         
         if value < 100:
+            print(1)
             value = value + 1
             self.bar.setValue(value)
         else:
@@ -79,10 +110,7 @@ class BacaData(QWidget):
 
 
 
-    def pindah(self):
-        self.switch_window.emit(self.line_edit.text())
 
-    
 
 class MainWindow(QtWidgets.QWidget):
 
@@ -152,15 +180,15 @@ class Controller:
     def __init__(self):
         pass
 
-    def show_login(self):
-        self.login = BacaData()
-        self.login.switch_window.connect(self.show_main)
-        self.login.show()
+    def show_progress(self):
+        self.baca = BacaData()
+        self.baca.switch_window.connect(self.show_main)
+        self.baca.show()
 
     def show_main(self):
         self.window = MainWindow()
         self.window.switch_window.connect(self.show_window_two)
-        self.login.close()
+        self.baca.close()
         self.window.show()
 
     def show_window_two(self, text):
@@ -172,7 +200,7 @@ class Controller:
 def main():
     app = QtWidgets.QApplication(sys.argv)
     controller = Controller()
-    controller.show_login()
+    controller.show_progress()
     sys.exit(app.exec_())
 
 
