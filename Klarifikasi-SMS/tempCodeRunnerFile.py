@@ -1,0 +1,5 @@
+        # self.setObjectName("Dialog")
+        # self.resize(372, 100)
+        # self.label = QtWidgets.QLabel(self)
+        # self.label.setGeometry(QtCore.QRect(30, 40, 200, 25))
+        # self.label.setObjectName("label")
