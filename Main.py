@@ -11,12 +11,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cluster import KMeans
 
-class MyWindow(QMainWindow):
+class KlarifikasiSMS(QMainWindow):
     def __init__(self,a,b,c,d,e):
-        super(MyWindow,self).__init__()
+        super(KlarifikasiSMS,self).__init__()
         self.initUI()
         self.stopword = a
-        self.punctuation = b
+        self.tandaBaca = b
         self.vectorizer = c
         self.x_train = d
         self.y_train = e
@@ -28,8 +28,8 @@ class MyWindow(QMainWindow):
         k = self.inputk.text()
         textsms = self.textsms.toPlainText()
 
-        modelknn = KNeighborsClassifier(n_neighbors=int(k), weights='distance')
-        modelknn.fit(self.x_train,self.y_train)
+        kkn = KNeighborsClassifier(n_neighbors=int(k), weights='distance')
+        kkn.fit(self.x_train,self.y_train)
 
         sms = textsms
         sms = sms.split(",, ")
@@ -40,7 +40,7 @@ class MyWindow(QMainWindow):
             arr_teks = []
             arr_teks.append(teks)
             vektor = self.vectorizer.transform(arr_teks)
-            prediksi_label_knn = modelknn.predict(vektor)
+            prediksi_label_knn = kkn.predict(vektor)
             QMessageBox.about(self, "Hasil Klarifikasi","\n " + "Kelompok : "+nama_label[np.int(prediksi_label_knn)]+"\t\n\t")
 
     def initUI(self):
@@ -75,7 +75,7 @@ def window():
 
     data_stopword = json.load(open('stopwords-id.json','r'))
     stopword = set(data_stopword)
-    punctuation = set(string.punctuation)
+    tandaBaca = set(string.punctuation)
 
     sms_csv = pd.read_csv('dataset_sms.csv')
     dataset = []
@@ -89,8 +89,8 @@ def window():
     vectorizer = TfidfVectorizer(stop_words=data_stopword)
     x_train = vectorizer.fit_transform(dataset)
 
-    win2 = MyWindow(stopword,punctuation,vectorizer,x_train,y_train)
-    win2.show()
+    ksms = KlarifikasiSMS(stopword,tandaBaca,vectorizer,x_train,y_train)
+    ksms.show()
     sys.exit(app.exec_())
 
 window()
