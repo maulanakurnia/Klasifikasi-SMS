@@ -7,7 +7,6 @@ import json
 import numpy as np
 import pandas as pd
 
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cluster import KMeans
@@ -45,7 +44,7 @@ class MyWindow(QMainWindow):
             QMessageBox.about(self, "Hasil Klarifikasi","\n " + "Kelompok : "+nama_label[np.int(prediksi_label_knn)]+"\t\n\t")
 
     def initUI(self):
-        self.setGeometry(2000, 200, 600, 300)
+        self.setGeometry(2000, 200, 380, 240)
         self.setWindowTitle("Klarifikasi SMS")
 
         self.lsms = QtWidgets.QLabel(self)
@@ -79,16 +78,16 @@ def window():
     punctuation = set(string.punctuation)
 
     sms_csv = pd.read_csv('dataset_sms.csv')
-    sms_bersih = []
+    dataset = []
     for index, row in sms_csv.iterrows():
-        sms_bersih.append(row["Teks"])
+        dataset.append(row["Teks"])
 
     y_train = []
     for index, row in sms_csv.iterrows():
         y_train.append(row["label"])
 
     vectorizer = TfidfVectorizer(stop_words=data_stopword)
-    x_train = vectorizer.fit_transform(sms_bersih)
+    x_train = vectorizer.fit_transform(dataset)
 
     win2 = MyWindow(stopword,punctuation,vectorizer,x_train,y_train)
 
