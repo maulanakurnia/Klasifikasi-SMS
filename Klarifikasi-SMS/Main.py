@@ -162,11 +162,6 @@ def window():
 
     win2 = MyWindow(stopword,punctuation,vectorizer,x_train,y_train)
 
-
-
-
-    
-
     win2.show()
     sys.exit(app.exec_())
 
