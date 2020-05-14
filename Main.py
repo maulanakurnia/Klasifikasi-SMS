@@ -90,9 +90,7 @@ def window():
     x_train = vectorizer.fit_transform(dataset)
 
     win2 = MyWindow(stopword,punctuation,vectorizer,x_train,y_train)
-
     win2.show()
     sys.exit(app.exec_())
-
 
 window()
