@@ -65,7 +65,7 @@ class MyWindow(QMainWindow):
         self.hasil.setGeometry(370,20,200,50)
 
         self.b1 = QtWidgets.QPushButton(self)
-        self.b1.setText("Submit")
+        self.b1.setText("Klarifikas")
         self.b1.setGeometry(130, 175,200,25)
         self.b1.clicked.connect(self.button_clicked)
 
