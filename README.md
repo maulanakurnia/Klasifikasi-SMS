@@ -2,7 +2,7 @@
 Klarifikasi SMS Menggunakan Metode KNN
 
 Source Code ini di bangun dengan bahasa pemrograman python 3.8.2 dan di eksekusi dengan os Linux<br>
-dengan Metode **_Memahami K-Nearest Neighbor_ (_KNN_)**<br>
+dengan Metode **_K-Nearest Neighbor_ (_KNN_)**<br>
 adapun library pada program ini antara lain :
 - PyQt5, ***library GUI*** 
 - sys, ***library GUI***
