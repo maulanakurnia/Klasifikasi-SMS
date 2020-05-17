@@ -11,9 +11,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cluster import KMeans
 
-class KlarifikasiSMS(QMainWindow):
+class KlasifikasiSMS(QMainWindow):
     def __init__(self,a,b,c,d,e):
-        super(KlarifikasiSMS,self).__init__()
+        super(KlasifikasiSMS,self).__init__()
         self.initUI()
         self.stopword = a
         self.tandaBaca = b
@@ -41,11 +41,11 @@ class KlarifikasiSMS(QMainWindow):
             arr_teks.append(teks)
             vektor = self.vectorizer.transform(arr_teks)
             prediksi_label_knn = kkn.predict(vektor)
-            QMessageBox.about(self, "Hasil Klarifikasi","\n " + "Kelompok : "+nama_label[np.int(prediksi_label_knn)]+"\t\n\t")
+            QMessageBox.about(self, "Hasil Klasifikasi","\n " + "Kelompok : "+nama_label[np.int(prediksi_label_knn)]+"\t\n\t")
 
     def initUI(self):
         self.setGeometry(2000, 200, 380, 240)
-        self.setWindowTitle("Klarifikasi SMS")
+        self.setWindowTitle("Klasifikasi SMS")
 
         self.lsms = QtWidgets.QLabel(self)
         self.lsms.setText("Masukkan SMS : ")
@@ -65,7 +65,7 @@ class KlarifikasiSMS(QMainWindow):
         self.hasil.setGeometry(370,20,200,50)
 
         self.b1 = QtWidgets.QPushButton(self)
-        self.b1.setText("Klarifikas")
+        self.b1.setText("Klasifikasi")
         self.b1.setGeometry(130, 175,200,25)
         self.b1.clicked.connect(self.button_clicked)
 
@@ -89,7 +89,7 @@ def window():
     vectorizer = TfidfVectorizer(stop_words=data_stopword)
     x_train = vectorizer.fit_transform(dataset)
 
-    ksms = KlarifikasiSMS(stopword,tandaBaca,vectorizer,x_train,y_train)
+    ksms = KlasifikasiSMS(stopword,tandaBaca,vectorizer,x_train,y_train)
     ksms.show()
     sys.exit(app.exec_())
 
