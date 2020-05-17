@@ -12,7 +12,7 @@ adapun library pada program ini antara lain :
 - pandas, ***library Data Analisis***
 - sklearn, ***library Machine Learning***
 
-Ada 3 klarifikasi pada klarifikasi sms ini :
+Ada 3 klarifikasi pada klasifikasi sms ini :
 - Normal
 - Penipuan
 - Penawaran
