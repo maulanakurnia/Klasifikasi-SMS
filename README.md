@@ -1,5 +1,5 @@
 # Project-Sistem-Cerdas-dan-Pengambilan-Keputusan
-Klarifikasi SMS Menggunakan Metode KNN
+Klasifikasi SMS Menggunakan Metode KNN
 
 Source Code ini di bangun dengan bahasa pemrograman python 3.8.2 dan di eksekusi dengan os Linux<br>
 dengan Metode **_K-Nearest Neighbor_ (_KNN_)**<br>
